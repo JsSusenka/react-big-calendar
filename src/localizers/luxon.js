@@ -285,8 +285,8 @@ export default function (DateTime, { firstDayOfWeek = 7 } = {}) {
   }
 
   // Luxon will automatically handle DST differences in it's calculations
-  function getTotalMin(start, end) {
-    return diff(start, end, 'minutes')
+  function getTotalUnit(start, end, unit) {
+    return diff(start, end, unit)
   }
 
   function getMinutesFromMidnight(start) {
@@ -406,7 +406,7 @@ export default function (DateTime, { firstDayOfWeek = 7 } = {}) {
     max,
 
     getSlotDate,
-    getTotalMin,
+    getTotalUnit,
     getMinutesFromMidnight,
     continuesPrior,
     continuesAfter,

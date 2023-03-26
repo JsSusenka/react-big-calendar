@@ -10,32 +10,62 @@ export function getSlotMetrics({
   timeslots,
   localizer,
 }) {
+  const isMonthView = true
+
+  if (isMonthView) {
+    start = 1677625200000
+    end = 1680213600000
+    timeslots = 1
+    step = 1
+  }
+
   const key = getKey({ start, end, step, timeslots, localizer })
 
   // DST differences are handled inside the localizer
-  const totalMin = 1 + localizer.getTotalMin(start, end)
-  const minutesFromMidnight = localizer.getMinutesFromMidnight(start)
-  const numGroups = Math.ceil((totalMin - 1) / (step * timeslots))
+  const totalUnit = (!isMonthView ? 1 : 0) + localizer.getTotalUnit(start, end, !isMonthView ? "minutes" : "days")
+  const numGroups = Math.ceil(!isMonthView ? (totalUnit - 1) / (step * timeslots) : totalUnit)
   const numSlots = numGroups * timeslots
+
+  const minutesFromMidnight = localizer.getMinutesFromMidnight(start)
 
   const groups = new Array(numGroups)
   const slots = new Array(numSlots)
+
+  console.log("totalUnit", totalUnit)
+  console.log("numGroups", numGroups)
+  console.log("numSlots", numSlots)
+
+  console.log("start", start)
+  console.log("end", end)
+  console.log("minutesFromMidnight", minutesFromMidnight)
+
   // Each slot date is created from "zero", instead of adding `step` to
   // the previous one, in order to avoid DST oddities
-  for (let grp = 0; grp < numGroups; grp++) {
+  for (let grp = 0; grp <= numGroups; grp++) {
     groups[grp] = new Array(timeslots)
 
     for (let slot = 0; slot < timeslots; slot++) {
       const slotIdx = grp * timeslots + slot
-      const minFromStart = slotIdx * step
-      // A date with total minutes calculated from the start of the day
-      slots[slotIdx] = groups[grp][slot] = localizer.getSlotDate(
-        start,
-        minutesFromMidnight,
-        minFromStart
-      )
+
+      console.log("slotIdx", slotIdx)
+
+      if (!isMonthView) {
+        const minFromStart = slotIdx * step
+        // A date with total minutes calculated from the start of the day
+        slots[slotIdx] = groups[grp][slot] = localizer.getSlotDate(
+          start,
+          minutesFromMidnight,
+          minFromStart
+        )
+      } else {
+        slots[slotIdx] = groups[grp][slot] = localizer.add(start, grp, "days")
+        console.log("grp", grp)
+      }
     }
   }
+
+  console.log("slots", slots)
+  console.log("groups", groups)
 
   // Necessary to be able to select up until the last timeslot in a day
   const lastSlotMinFromStart = slots.length * step
@@ -45,9 +75,9 @@ export function getSlotMetrics({
 
   function positionFromDate(date) {
     const diff =
-      localizer.diff(start, date, 'minutes') +
+      localizer.diff(start, date, !isMonthView ? "minutes" : "days") +
       localizer.getDstOffset(start, date)
-    return Math.min(diff, totalMin)
+    return Math.min(diff, totalUnit)
   }
 
   return {

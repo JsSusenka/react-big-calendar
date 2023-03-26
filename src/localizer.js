@@ -66,8 +66,8 @@ function getDstOffset(start, end) {
 
 // if the start is on a DST-changing day but *after* the moment of DST
 // transition we need to add those extra minutes to our minutesFromMidnight
-function getTotalMin(start, end) {
-  return diff(start, end, 'minutes') + getDstOffset(start, end)
+function getTotalUnit(start, end, unit) {
+  return diff(start, end, unit) + getDstOffset(start, end)
 }
 
 function getMinutesFromMidnight(start) {
@@ -175,7 +175,7 @@ export class DateLocalizer {
     this.getTimezoneOffset =
       spec.getTimezoneOffset || (value => value.getTimezoneOffset())
     this.getDstOffset = spec.getDstOffset || getDstOffset
-    this.getTotalMin = spec.getTotalMin || getTotalMin
+    this.getTotalUnit = spec.getTotalUnit || getTotalUnit
     this.getMinutesFromMidnight =
       spec.getMinutesFromMidnight || getMinutesFromMidnight
     this.continuesPrior = spec.continuesPrior || continuesPrior
