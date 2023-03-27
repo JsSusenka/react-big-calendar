@@ -90,7 +90,7 @@ export default class TimeGrid extends Component {
   }
 
   renderEvents(range, events, backgroundEvents, now) {
-    let { min, max, components, accessors, localizer, dayLayoutAlgorithm } =
+    let { min, max, components, accessors, localizer, dayLayoutAlgorithm, compact } =
       this.props
 
     const resources = this.memoizedResources(this.props.resources, accessors)
@@ -133,6 +133,7 @@ export default class TimeGrid extends Component {
             events={daysEvents}
             backgroundEvents={daysBackgroundEvents}
             dayLayoutAlgorithm={dayLayoutAlgorithm}
+            compact={compact}
           />
         )
       })
@@ -158,6 +159,7 @@ export default class TimeGrid extends Component {
       showMultiDayTimes,
       longPressThreshold,
       resizable,
+      compact,
     } = this.props
 
     width = width || this.state.gutterWidth
@@ -244,6 +246,7 @@ export default class TimeGrid extends Component {
             components={components}
             className="rbc-time-gutter"
             getters={getters}
+            compact={compact}
           />
           {this.renderEvents(
             range,

@@ -681,6 +681,11 @@ class Calendar extends React.Component {
       timeGutterFormat: dateFormat,
 
       /**
+       * The timestamp cell formats in compact month view, e.g. 26.3.2023
+       */
+      timeGutterMonthFormat: dateFormat,
+
+      /**
        * Toolbar header format for the Month view, e.g "2015 April"
        *
        */

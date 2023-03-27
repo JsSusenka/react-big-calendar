@@ -40,6 +40,7 @@ export const formats = {
   eventTimeRangeEndFormat: timeRangeEndFormat,
 
   timeGutterFormat: 'LT',
+  timeGutterMonthFormat: "ll",
 
   monthHeaderFormat: 'MMMM YYYY',
   dayHeaderFormat: 'dddd MMM DD',

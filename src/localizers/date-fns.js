@@ -30,7 +30,7 @@ export let formats = {
   eventTimeRangeStartFormat: timeRangeStartFormat,
   eventTimeRangeEndFormat: timeRangeEndFormat,
 
-  timeGutterFormat: 'p',
+  timeGutterFormat: 'PPpp',
 
   monthHeaderFormat: 'MMMM yyyy',
   dayHeaderFormat: 'cccc MMM dd',

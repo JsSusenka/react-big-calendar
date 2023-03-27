@@ -32,6 +32,7 @@ class Day extends React.Component {
         max={max}
         scrollToTime={scrollToTime}
         enableAutoScroll={enableAutoScroll}
+        compact
       />
     )
   }

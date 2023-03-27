@@ -32,6 +32,7 @@ const TimeGutter = ({
   components,
   getters,
   gutterRef,
+  compact,
 }) => {
   const { timeGutterWrapper: TimeGutterWrapper } = components
   const { start, end } = useMemo(
@@ -39,6 +40,7 @@ const TimeGutter = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [min?.toISOString(), max?.toISOString(), localizer]
   )
+
   const [slotMetrics, setSlotMetrics] = useState(
     getSlotMetrics({
       min: start,
@@ -46,6 +48,7 @@ const TimeGutter = ({
       timeslots,
       step,
       localizer,
+      compact,
     })
   )
 
@@ -58,6 +61,7 @@ const TimeGutter = ({
           timeslots,
           step,
           localizer,
+          compact,
         })
       )
     }
@@ -74,7 +78,7 @@ const TimeGutter = ({
       const isNow = slotMetrics.dateIsInGroup(getNow(), idx)
       return (
         <span className={clsx('rbc-label', isNow && 'rbc-now')}>
-          {localizer.format(value, 'timeGutterFormat')}
+          {localizer.format(value, compact ? "timeGutterMonthFormat" : "timeGutterFormat")}
         </span>
       )
     },

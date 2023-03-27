@@ -9,21 +9,22 @@ export function getSlotMetrics({
   step,
   timeslots,
   localizer,
+  compact,
 }) {
-  const isMonthView = true
-
-  if (isMonthView) {
+  if (compact) {
     start = 1677625200000
     end = 1680213600000
     timeslots = 1
     step = 1
   }
 
+  console.log("compact", compact)
+
   const key = getKey({ start, end, step, timeslots, localizer })
 
   // DST differences are handled inside the localizer
-  const totalUnit = (!isMonthView ? 1 : 0) + localizer.getTotalUnit(start, end, !isMonthView ? "minutes" : "days")
-  const numGroups = Math.ceil(!isMonthView ? (totalUnit - 1) / (step * timeslots) : totalUnit)
+  const totalUnit = (!compact ? 1 : 0) + localizer.getTotalUnit(start, end, !compact ? "minutes" : "days")
+  const numGroups = Math.ceil(!compact ? (totalUnit - 1) / (step * timeslots) : totalUnit)
   const numSlots = numGroups * timeslots
 
   const minutesFromMidnight = localizer.getMinutesFromMidnight(start)
@@ -47,9 +48,7 @@ export function getSlotMetrics({
     for (let slot = 0; slot < timeslots; slot++) {
       const slotIdx = grp * timeslots + slot
 
-      console.log("slotIdx", slotIdx)
-
-      if (!isMonthView) {
+      if (!compact) {
         const minFromStart = slotIdx * step
         // A date with total minutes calculated from the start of the day
         slots[slotIdx] = groups[grp][slot] = localizer.getSlotDate(
@@ -59,7 +58,6 @@ export function getSlotMetrics({
         )
       } else {
         slots[slotIdx] = groups[grp][slot] = localizer.add(start, grp, "days")
-        console.log("grp", grp)
       }
     }
   }
@@ -75,14 +73,15 @@ export function getSlotMetrics({
 
   function positionFromDate(date) {
     const diff =
-      localizer.diff(start, date, !isMonthView ? "minutes" : "days") +
+      localizer.diff(start, date, !compact ? "minutes" : "days") +
       localizer.getDstOffset(start, date)
     return Math.min(diff, totalUnit)
   }
 
   return {
     groups,
-    update(args) {
+    update(args, compact) {
+      console.log("args", compact)
       if (getKey(args) !== key) return getSlotMetrics(args)
       return this
     },
