@@ -14,9 +14,9 @@ class Day extends React.Component {
     let {
       date,
       localizer,
-      min = localizer.startOf(new Date(), 'day'),
-      max = localizer.endOf(new Date(), 'day'),
-      scrollToTime = localizer.startOf(new Date(), 'day'),
+      min = localizer.startOf(new Date(), 'month'),
+      max = localizer.endOf(new Date(), 'month'),
+      scrollToTime = localizer.startOf(new Date(), 'month'),
       enableAutoScroll = true,
       ...props
     } = this.props
@@ -33,6 +33,25 @@ class Day extends React.Component {
         scrollToTime={scrollToTime}
         enableAutoScroll={enableAutoScroll}
         compact
+        events={[
+            {
+              id: 1,
+              title: 'Long Event',
+              start: new Date(2023, 3, 2),
+              end: new Date(2033, 3, 2),
+              resource: "res1"
+            },
+        ]}
+        resources={[
+          {
+            id: "res1",
+            title: "pepa"
+          },
+          {
+            id: "res2",
+            title: "ales"
+          }
+        ]}
       />
     )
   }
@@ -48,7 +67,7 @@ Day.propTypes = {
 }
 
 Day.range = (date, { localizer }) => {
-  return [localizer.startOf(date, 'day')]
+  return [localizer.startOf(date, 'month'), localizer.endOf(date, 'month')]
 }
 
 Day.navigate = (date, action, { localizer }) => {

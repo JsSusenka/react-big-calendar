@@ -12,13 +12,16 @@ export function getSlotMetrics({
   compact,
 }) {
   if (compact) {
-    start = 1677625200000
-    end = 1680213600000
+    //start = 1677625200000
+    //end = 1680213600000
     timeslots = 1
     step = 1
   }
 
-  console.log("compact", compact)
+  console.log("start", start)
+  console.log("end", end)
+
+  // console.log("compact", compact)
 
   const key = getKey({ start, end, step, timeslots, localizer })
 
@@ -32,6 +35,7 @@ export function getSlotMetrics({
   const groups = new Array(numGroups)
   const slots = new Array(numSlots)
 
+  /*
   console.log("totalUnit", totalUnit)
   console.log("numGroups", numGroups)
   console.log("numSlots", numSlots)
@@ -39,6 +43,7 @@ export function getSlotMetrics({
   console.log("start", start)
   console.log("end", end)
   console.log("minutesFromMidnight", minutesFromMidnight)
+  */
 
   // Each slot date is created from "zero", instead of adding `step` to
   // the previous one, in order to avoid DST oddities
@@ -62,8 +67,10 @@ export function getSlotMetrics({
     }
   }
 
+  /*
   console.log("slots", slots)
   console.log("groups", groups)
+  */
 
   // Necessary to be able to select up until the last timeslot in a day
   const lastSlotMinFromStart = slots.length * step
