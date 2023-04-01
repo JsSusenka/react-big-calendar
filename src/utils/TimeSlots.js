@@ -18,10 +18,10 @@ export function getSlotMetrics({
     step = 1
   }
 
-  console.log("start", start)
-  console.log("end", end)
+  //console.log("slotMetricsMin", start)
+  //console.log("slotMetricsMax", end)
 
-  // console.log("compact", compact)
+  //console.log("compact", compact)
 
   const key = getKey({ start, end, step, timeslots, localizer })
 
@@ -43,7 +43,7 @@ export function getSlotMetrics({
   console.log("start", start)
   console.log("end", end)
   console.log("minutesFromMidnight", minutesFromMidnight)
-  */
+   */
 
   // Each slot date is created from "zero", instead of adding `step` to
   // the previous one, in order to avoid DST oddities
@@ -87,8 +87,7 @@ export function getSlotMetrics({
 
   return {
     groups,
-    update(args, compact) {
-      console.log("args", compact)
+    update(args) {
       if (getKey(args) !== key) return getSlotMetrics(args)
       return this
     },

@@ -123,8 +123,8 @@ export default class TimeGrid extends Component {
           <DayColumn
             {...this.props}
             localizer={localizer}
-            min={localizer.merge(date, min)}
-            max={localizer.merge(date, max)}
+            min={compact ? min : localizer.merge(date, min)}
+            max={compact ? max : localizer.merge(date, max)}
             resource={resource && id}
             components={components}
             isNow={localizer.isSameDate(date, now)}
@@ -228,6 +228,7 @@ export default class TimeGrid extends Component {
           onDrillDown={this.props.onDrillDown}
           getDrilldownView={this.props.getDrilldownView}
           resizable={resizable}
+          compact={compact}
         />
         <div
           ref={this.contentRef}
@@ -238,8 +239,8 @@ export default class TimeGrid extends Component {
             date={start}
             ref={this.gutterRef}
             localizer={localizer}
-            min={localizer.merge(start, min)}
-            max={localizer.merge(start, max)}
+            min={compact ? min : localizer.merge(start, min)}
+            max={compact ? max : localizer.merge(start, max)}
             step={this.props.step}
             getNow={this.props.getNow}
             timeslots={this.props.timeslots}
